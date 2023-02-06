@@ -1,12 +1,12 @@
 import React from 'react';
 
 function Guess({ guess }) {
-  const row = guess ? guess.split('') : Array(5).fill(' ');
+  const row = guess || Array(5).fill({ letter: '', status: '' });
   return (
     <p className="guess">
-      {row.map((char, i) => (
-        <span key={i} className="cell">
-          {char}
+      {row.map(({ letter, status }, i) => (
+        <span key={i} className={`cell ${status}`}>
+          {letter}
         </span>
       ))}
     </p>
