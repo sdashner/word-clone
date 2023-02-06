@@ -5,7 +5,13 @@ function GameOverBanner({ isWinner, answer, numberOfGuesses }) {
     <div className="happy banner">
       <p>
         <strong>Congratulations!</strong> Got it in
-        <strong>{numberOfGuesses} guesses</strong>.
+        <strong>
+          {' '}
+          {`${numberOfGuesses} guess${
+            numberOfGuesses === 1 ? '' : 'es'
+          }`}
+        </strong>
+        .
       </p>
     </div>
   ) : (

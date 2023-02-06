@@ -15,35 +15,31 @@ console.info({ answer });
 
 function Game() {
   const [guesses, setGuesses] = useState([]);
-  const [endState, setEndState] = useState({
-    gameOver: false,
-    isWinner: false,
-  });
+  const [gameState, setGameState] = useState('inProgress');
 
   const addGuess = (guess) => {
-    const hasWon = guess === answer;
-    const usedAllGuesses =
-      guesses.length + 1 === NUM_OF_GUESSES_ALLOWED;
-      
-    setGuesses([
+    const nextGuesses = [
       ...guesses,
       { guess: checkGuess(guess, answer), id: Math.random() },
-    ]);
+    ];
 
-    if (hasWon || usedAllGuesses) {
-      setEndState({ gameOver: true, isWinner: hasWon });
+    setGuesses(nextGuesses);
+    if (guess === answer) {
+      setGameState('won');
+    } else if (nextGuesses.length >= NUM_OF_GUESSES_ALLOWED) {
+      setGameState('lost');
     }
   };
 
   return (
     <>
       <GuessResults guesses={guesses} />
-      <GuessInput disabled={endState.gameOver} addGuess={addGuess} />
-      {endState.gameOver && (
+      <GuessInput disabled={gameState !== 'inProgress'} addGuess={addGuess} />
+      {gameState !== 'inProgress' && (
         <GameOverBanner
           answer={answer}
           numberOfGuesses={guesses.length}
-          isWinner={endState.isWinner}
+          isWinner={gameState}
         />
       )}
     </>
