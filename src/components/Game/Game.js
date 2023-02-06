@@ -4,6 +4,7 @@ import { sample } from '../../utils';
 import { WORDS } from '../../data';
 import GuessInput from '../GuessInput/GuessInput';
 import GuessResults from '../GuessResults/GuessResults';
+import GameOverBanner from '../GameOverBanner/GameOverBanner';
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 import { checkGuess } from '../../game-helpers';
 
@@ -14,21 +15,37 @@ console.info({ answer });
 
 function Game() {
   const [guesses, setGuesses] = useState([]);
+  const [endState, setEndState] = useState({
+    gameOver: false,
+    isWinner: false,
+  });
 
   const addGuess = (guess) => {
-    if (guesses.length >= NUM_OF_GUESSES_ALLOWED) {
-      return;
-    }
+    const hasWon = guess === answer;
+    const usedAllGuesses =
+      guesses.length + 1 === NUM_OF_GUESSES_ALLOWED;
+      
     setGuesses([
       ...guesses,
       { guess: checkGuess(guess, answer), id: Math.random() },
     ]);
+
+    if (hasWon || usedAllGuesses) {
+      setEndState({ gameOver: true, isWinner: hasWon });
+    }
   };
 
   return (
     <>
       <GuessResults guesses={guesses} />
-      <GuessInput addGuess={addGuess} />
+      <GuessInput disabled={endState.gameOver} addGuess={addGuess} />
+      {endState.gameOver && (
+        <GameOverBanner
+          answer={answer}
+          numberOfGuesses={guesses.length}
+          isWinner={endState.isWinner}
+        />
+      )}
     </>
   );
 }
