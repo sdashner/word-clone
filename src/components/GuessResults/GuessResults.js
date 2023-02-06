@@ -12,13 +12,11 @@ function GuessResults({ guesses }) {
       id: number,
     })),
   ];
-  
+
   return (
     <div className="guess-results">
       {results.map(({ guess, id }) => (
-        <React.Fragment key={id}>
-          <Guess guess={guess} />
-        </React.Fragment>
+        <Guess key={id} guess={guess} />
       ))}
     </div>
   );
