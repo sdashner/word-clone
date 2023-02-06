@@ -4,6 +4,7 @@ import { sample } from '../../utils';
 import { WORDS } from '../../data';
 import GuessInput from '../GuessInput/GuessInput';
 import GuessResults from '../GuessResults/GuessResults';
+import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -14,7 +15,10 @@ function Game() {
   const [guesses, setGuesses] = useState([]);
 
   const addGuess = (guess) => {
-    setGuesses([{ guess, id: Math.random() }, ...guesses]);
+    if (guesses.length >= NUM_OF_GUESSES_ALLOWED) {
+      return;
+    }
+    setGuesses([...guesses, { guess, id: Math.random() }]);
   };
 
   return (

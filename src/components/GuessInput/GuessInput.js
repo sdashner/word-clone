@@ -19,7 +19,8 @@ function GuessInput({ addGuess }) {
       <input
         id="guess-input"
         type="text"
-        pattern="[A-Z]{5,5}"
+        required
+        pattern="[a-zA-Z]{5}"
         value={guess}
         onChange={handleChange}
       />
